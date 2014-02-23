@@ -1,0 +1,8 @@
+{
+	"description": "Yummy Treats",
+	"items": [
+		{"name": "Cookies", "completed": true},
+		{"name": "Ice Cream", "completed": false},
+		{"name": "Waffles", "completed": false}
+	]
+}

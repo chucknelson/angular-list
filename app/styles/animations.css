@@ -1,0 +1,12 @@
+/* angular-specific animation css */
+
+.list-item {
+  -webkit-transition: 0.2s linear all;
+  -moz-transition: 0.2s linear all;
+  -o-transition: 0.2s linear all;
+  transition: 0.2s linear all;
+}
+
+.list-item-complete {
+	background-color: #ddd;
+}

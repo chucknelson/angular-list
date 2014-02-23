@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)http://docs.angularjs.org/tutorial/step_05 -->
+<html class="no-js ng-app: docsApp; ng-scope" lang="en" ng-controller="DocsController"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>
+  <style>
+    .ng-hide { display:none!important; }
+  </style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Description" content="AngularJS is what HTML would have been, had it been designed for building web-apps.
+                 Declarative templates with data-binding, MVC, dependency injection and great
+                 testability story all implemented with pure client-side JavaScript!">
+  <meta name="fragment" content="!">
+  <title ng-bind-template="AngularJS: 5 - XHRs &amp; Dependency Injection" class="ng-binding">AngularJS: 5 - XHRs &amp; Dependency Injection</title>
+  <script type="text/javascript" async="" src="./AngularJS  5 - XHRs & Dependency Injection_files/ga.js"></script><script type="text/javascript">
+    // dynamically add base tag as well as css and javascript files.
+    // we can't add css/js the usual way, because some browsers (FF) eagerly prefetch resources
+    // before the base attribute is added, causing 404 and terribly slow loading of the docs app.
+    (function() {
+      if (window.name.indexOf('NG_DEFER_BOOTSTRAP!') == 0) {
+        //TODO(i): super ugly hack to temporarily speed up our e2e tests until we move to protractor + extracted examples
+        window.RUNNING_IN_NG_TEST_RUNNER = true;
+      }
+
+      var indexFile = (location.pathname.match(/\/(index[^\.]*\.html)/) || ['', ''])[1],
+          rUrl = /(#!\/|api|guide|misc|tutorial|error|index[^\.]*\.html).*$/,
+          baseUrl = location.href.replace(rUrl, indexFile),
+          jQuery = /index-jq[^\.]*\.html$/.test(baseUrl),
+          debug = /index[^\.]*-debug\.html$/.test(baseUrl),
+          production = location.hostname === 'docs.angularjs.org',
+          headEl = document.getElementsByTagName('head')[0],
+          sync = true,
+          angularVersion = {
+            current: '1.2.14-build.2266+sha.3018ff7', // rewrite during build
+            cdn: '1.2.13'
+          };
+
+      addTag('base', {href: baseUrl});
+      addTag('link', {rel: 'stylesheet', href: 'components/bootstrap/css/' + (debug ? 'bootstrap.css' : 'bootstrap.min.css'), type: 'text/css'});
+      addTag('link', {rel: 'stylesheet', href: 'components/font-awesome/css/' + (debug ? 'font-awesome.css' : 'font-awesome.min.css'), type: 'text/css'});
+      addTag('link', {rel: 'stylesheet', href: 'css/prettify.css', type: 'text/css'});
+      addTag('link', {rel: 'stylesheet', href: 'css/docs.css', type: 'text/css'});
+      addTag('link', {rel: 'stylesheet', href: 'css/animations.css', type: 'text/css'});
+      if (jQuery) addTag('script', {src: (debug ? 'components/jquery.js' : 'components/jquery.min.js')});
+      addTag('script', {src: path('angular.js')}, sync);
+      addTag('script', {src: path('angular-resource.js') }, sync);
+      addTag('script', {src: path('angular-route.js') }, sync);
+      addTag('script', {src: path('angular-cookies.js') }, sync);
+      addTag('script', {src: path('angular-sanitize.js') }, sync);
+      addTag('script', {src: path('angular-touch.js') }, sync);
+      addTag('script', {src: path('angular-animate.js') }, sync);
+      addTag('script', {src: 'components/angular-bootstrap.js' }, sync);
+      addTag('script', {src: 'components/angular-bootstrap-prettify.js' }, sync);
+      if (!window.RUNNING_IN_NG_TEST_RUNNER) {
+        addTag('script', {src: 'components/google-code-prettify.js' }, sync);
+        addTag('script', {src: 'components/' + (debug ? 'lunr.js' : 'lunr.min.js') }, sync);
+      }
+      addTag('script', {src: 'components/marked.js' }, sync);
+      addTag('script', {src: 'docs-data.js'}, sync);
+      addTag('script', {src: 'js/docs.js'}, sync);
+
+      function path(name) {
+        if (production) {
+          if (name.match(/^angular(-\w+)?\.js/) && !name.match(/bootstrap/)) {
+            name =  '//ajax.googleapis.com/ajax/libs/angularjs/' +
+                angularVersion.cdn +
+                '/' +
+                name.replace(/\.js$/, '.min.js');
+          } else {
+            name =  'http://code.angularjs.org/' +
+                angularVersion.cdn +
+                '/' +
+                name.replace(/\.js$/, '.min.js');
+          }
+          return name;
+        }
+        return '../' + name.replace(/\.js$/, debug ? '.js' : '.min.js');
+      }
+
+      function addTag(name, attributes, sync) {
+        var el = document.createElement(name),
+            attrName;
+
+        for (attrName in attributes) {
+          el.setAttribute(attrName, attributes[attrName]);
+        }
+
+        sync ? document.write(outerHTML(el)) : headEl.appendChild(el);
+      }
+
+      function outerHTML(node){
+        // if IE, Chrome take the internal method otherwise build one
+        return node.outerHTML || (
+            function(n){
+                var div = document.createElement('div'), h;
+                div.appendChild(n);
+                h = div.innerHTML;
+                div = null;
+                return h;
+            })(node);
+      }
+    })();
+
+
+    // force page reload when new update is available
+    window.applicationCache && window.applicationCache.addEventListener('updateready', function(e) {
+      if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.swapCache();
+        window.location.reload();
+      }
+    }, false);
+
+
+    // GA asynchronous tracker
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-8594346-3']);
+    _gaq.push(['_setDomainName', '.angularjs.org']);
+
+    if (!window.RUNNING_IN_NG_TEST_RUNNER) {
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    }
+  </script><!--<base href="http://docs.angularjs.org/">--><base href="."><link rel="stylesheet" href="./AngularJS  5 - XHRs & Dependency Injection_files/bootstrap.min.css" type="text/css"><link rel="stylesheet" href="./AngularJS  5 - XHRs & Dependency Injection_files/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="./AngularJS  5 - XHRs & Dependency Injection_files/prettify.css" type="text/css"><link rel="stylesheet" href="./AngularJS  5 - XHRs & Dependency Injection_files/docs.css" type="text/css"><link rel="stylesheet" href="./AngularJS  5 - XHRs & Dependency Injection_files/animations.css" type="text/css"><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular.min.js"></script><style type="text/css"></style><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-resource.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-route.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-cookies.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-sanitize.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-touch.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-animate.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-bootstrap.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/angular-bootstrap-prettify.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/google-code-prettify.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/lunr.min.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/marked.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/docs-data.js"></script><script src="./AngularJS  5 - XHRs & Dependency Injection_files/docs.js"></script>
+</head>
+
+<body>
+  <header class="header ng-scope" ng-controller="DocsNavigationCtrl">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="http://angularjs.org/">
+            <img class="logo" src="./AngularJS  5 - XHRs & Dependency Injection_files/angularjs-for-header-only.svg">
+          </a>
+          <ul class="nav">
+            <li class="divider-vertical"></li>
+            <li><a href="http://angularjs.org/"><i class="icon-home icon-white"></i> Home</a></li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+              <a href="http://docs.angularjs.org/#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-eye-open icon-white"></i> Learn <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="disabled"><a href="http://angularjs.org/">Why AngularJS?</a></li>
+                <li><a href="http://www.youtube.com/user/angularjs">Watch</a></li>
+                <li><a href="http://docs.angularjs.org/tutorial">Tutorial</a></li>
+                <li><a href="http://builtwith.angularjs.org/">Case Studies</a></li>
+                <li><a href="https://github.com/angular/angular-seed">Seed App project template</a></li>
+                <li><a href="http://docs.angularjs.org/misc/faq">FAQ</a></li>
+              </ul>
+            </li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown active">
+              <a href="http://docs.angularjs.org/#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-book icon-white"></i> Develop <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="http://docs.angularjs.org/tutorial/">Tutorial</a></li>
+                <li><a href="http://docs.angularjs.org/guide/">Developer Guide</a></li>
+                <li><a href="http://docs.angularjs.org/api/">API Reference</a></li>
+                <li><a href="http://docs.angularjs.org/error/">Error Reference</a></li>
+                <li><a href="http://docs.angularjs.org/misc/contribute">Contribute</a></li>
+                <li><a href="http://code.angularjs.org/">Download</a></li>
+              </ul>
+            </li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+              <a href="http://docs.angularjs.org/#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-comment icon-white"></i> Discuss <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="http://blog.angularjs.org/">Blog</a></li>
+                <li><a href="http://groups.google.com/group/angular">Mailing List</a></li>
+                <li><a href="http://webchat.freenode.net/?channels=angularjs&uio=d4">Chat Room</a></li>
+                <li class="divider"></li>
+                <li><a href="https://twitter.com/#!/angularjs">Twitter</a></li>
+                <li><a href="https://plus.google.com/110323587230527980117">Google+</a></li>
+                <li class="divider"></li>
+                <li><a href="https://github.com/angular/angular.js">GitHub</a></li>
+                <li><a href="https://github.com/angular/angular.js/issues">Issue Tracker</a></li>
+              </ul>
+            </li>
+            <li class="divider-vertical"></li>
+          </ul>
+          <form class="navbar-search pull-right ng-pristine ng-valid" ng-submit="submit()">
+            <input type="text" name="as_q" class="search-query ng-pristine ng-valid" placeholder="Click to focus or press &#39;/&#39; to search" ng-change="search(q)" ng-model="q" docs-search-input="" autocomplete="off">
+          </form>
+          <div ng-show="hasResults" class="search-results ng-hide">
+            <!-- ngRepeat: (key, value) in results -->
+            <a href="" ng-click="hideResults()" class="search-close">
+              <span class="icon-remove-sign"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+ <div class="ng-hide" id="docs-fold-overlay" ng-show="docs_fold" ng-click="fold(null)"></div>
+ <div class="foldout ng-hide" id="docs-fold" ng-show="docs_fold">
+   <div id="docs-fold-close" ng-click="fold(null)">
+     <span class="icon-remove-sign"></span>
+   </div>
+   <!-- ngInclude: docs_fold -->
+ </div>
+
+<div ng-class="{fixed_body:docs_fold}">
+  <div role="main" class="container">
+    <div class="row clear-navbar"></div>
+
+    <div class="row">
+      <div class="span12">
+        <!--[if lt IE 7]>
+        <p class="alert alert-error">Your browser is <em>ancient!</em>
+          <a href="http://browsehappy.com/">Upgrade to a different browser</a> or
+          <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to
+          experience this site.
+        </p>
+        <![endif]-->
+
+        <!--[if lt IE 9]>
+        <div class="alert">
+          You are using an old version of Internet Explorer.
+          For better and safer browsing experience please <a href="http://www.microsoft.com/IE9">upgrade IE</a>
+          or install <a href="http://google.com/chrome">Google Chrome browser</a>.
+        </div>
+        <![endif]-->
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="span3">
+        <div class="well">
+          <div ng-controller="DocsVersionsCtrl" class="ng-scope">
+            <select ng-options="v as v.title group by v.group for v in docs_versions" ng-model="docs_version" ng-change="jumpToDocsVersion(docs_version)" class="docs-version-jump ng-pristine ng-valid"><optgroup label="Stable"><option value="0" selected="selected">AngularJS - v1.2.14-build.2266+sha.3018ff7</option><option value="1">AngularJS - v1.2.9</option><option value="2">AngularJS - v1.2.8</option><option value="3">AngularJS - v1.2.7</option><option value="4">AngularJS - v1.2.6</option><option value="5">AngularJS - v1.2.5</option><option value="6">AngularJS - v1.2.4</option><option value="7">AngularJS - v1.2.3</option><option value="8">AngularJS - v1.2.2</option><option value="9">AngularJS - v1.2.13</option><option value="10">AngularJS - v1.2.12</option><option value="11">AngularJS - v1.2.11</option><option value="12">AngularJS - v1.2.10</option><option value="13">AngularJS - v1.2.1</option><option value="16">AngularJS - v1.2.0</option><option value="24">AngularJS - v1.0.8</option><option value="25">AngularJS - v1.0.7</option><option value="26">AngularJS - v1.0.6</option><option value="27">AngularJS - v1.0.5</option><option value="28">AngularJS - v1.0.4</option><option value="29">AngularJS - v1.0.3</option><option value="30">AngularJS - v1.0.2</option><option value="31">AngularJS - v1.0.1</option><option value="32">AngularJS - v1.0.0</option></optgroup><optgroup label="Unstable"><option value="14">AngularJS - v1.2.0-rc3</option><option value="15">AngularJS - v1.2.0-rc2</option><option value="17">AngularJS - v1.2.0rc1</option><option value="18">AngularJS - v1.1.5</option><option value="19">AngularJS - v1.1.4</option><option value="20">AngularJS - v1.1.3</option><option value="21">AngularJS - v1.1.2</option><option value="22">AngularJS - v1.1.1</option><option value="23">AngularJS - v1.1.0</option><option value="33">AngularJS - v1.0.0rc12</option><option value="34">AngularJS - v1.0.0rc11</option><option value="35">AngularJS - v1.0.0rc10</option><option value="36">AngularJS - v1.0.0rc9</option><option value="37">AngularJS - v1.0.0rc8</option><option value="38">AngularJS - v1.0.0rc7</option><option value="39">AngularJS - v1.0.0rc6</option><option value="40">AngularJS - v1.0.0rc5</option><option value="41">AngularJS - v1.0.0rc4</option><option value="42">AngularJS - v1.0.0rc3</option><option value="43">AngularJS - v1.0.0rc2</option><option value="44">AngularJS - v1.0.0rc1</option></optgroup></select>
+          </div>
+          <div class="side-navigation">
+            <ul class="nav nav-list" ng-hide="page">
+              <!-- ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_00" tabindex="2" class="ng-binding">0 - Bootstrapping</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_01" tabindex="2" class="ng-binding">1 - Static Template</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_02" tabindex="2" class="ng-binding">2 - Angular Templates</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_03" tabindex="2" class="ng-binding">3 - Filtering Repeaters</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_04" tabindex="2" class="ng-binding">4 - Two-way Data Binding</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope active">
+                <a href="./AngularJS  5 - XHRs & Dependency Injection_files/AngularJS  5 - XHRs & Dependency Injection.html" tabindex="2" class="ng-binding">5 - XHRs &amp; Dependency Injection</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_06" tabindex="2" class="ng-binding">6 - Templating Links &amp; Images</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_07" tabindex="2" class="ng-binding">7 - Routing &amp; Multiple Views</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_08" tabindex="2" class="ng-binding">8 - More Templating</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_09" tabindex="2" class="ng-binding">9 - Filters</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_10" tabindex="2" class="ng-binding">10 - Event Handlers</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_11" tabindex="2" class="ng-binding">11 - REST and Custom Services</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope">
+                <a href="http://docs.angularjs.org/tutorial/step_12" tabindex="2" class="ng-binding">12 - Applying Animations</a>
+              </li><!-- end ngRepeat: page in pages track by page.url --><li ng-repeat="page in pages track by page.url" ng-class="navClass(page)" class="api-list-item ng-scope last">
+                <a href="http://docs.angularjs.org/tutorial/the_end" tabindex="2" class="ng-binding">The End</a>
+              </li><!-- end ngRepeat: page in pages track by page.url -->
+            </ul>
+
+            <!-- ngRepeat: namespace in namespaces track by namespace.url -->
+
+            <!-- ngRepeat: module in modules track by module.url -->
+
+          </div>
+        </div>
+      </div>
+      <div class="span9">
+
+        <ul class="breadcrumb">
+          <!-- ngRepeat: crumb in breadcrumb --><li ng-repeat="crumb in breadcrumb" class="ng-scope">
+            <span ng-hide="crumb.url" class="ng-binding ng-hide">Tutorial</span>
+            <a ng-show="crumb.url" href="http://docs.angularjs.org/tutorial" class="ng-binding">Tutorial</a>
+            <span ng-show="crumb.url" class="divider">/</span>
+          </li><!-- end ngRepeat: crumb in breadcrumb --><li ng-repeat="crumb in breadcrumb" class="ng-scope">
+            <span ng-hide="crumb.url" class="ng-binding">step_05</span>
+            <a ng-show="crumb.url" href="" class="ng-binding ng-hide">step_05</a>
+            <span ng-show="crumb.url" class="divider ng-hide">/</span>
+          </li><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb --><!-- end ngRepeat: crumb in breadcrumb -->
+        </ul>
+
+        <div id="loading" ng-show="loading" class="ng-hide">Loading...</div>
+
+        <!-- ngInclude:  --><div ng-hide="loading" ng-include="" src="currentPage.partialUrl" onload="afterPartialLoaded()" autoscroll="" class="content slide-reveal ng-scope" style=""><a href="http://github.com/angular/angular.js/edit/master/docs/content/tutorial/step_05.ngdoc" class="improve-docs btn btn-primary ng-scope"><i class="icon-edit"> </i> Improve this doc</a><h1 class="ng-scope"><code ng:non-bindable=""></code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div class="ng-scope"><div class="tutorial-page tutorial-5-xhrs-dependency-injection-page"><ul doc-tutorial-nav="5" class="btn-group tutorial-nav"><a href="http://docs.angularjs.org/tutorial/step_04"><li class="btn btn-primary"><i class="icon-step-backward"></i> Previous</li></a>
+<a href="http://angular.github.com/angular-phonecat/step-5/app"><li class="btn btn-primary"><i class="icon-play"></i> Live Demo</li></a>
+<a href="https://github.com/angular/angular-phonecat/compare/step-4...step-5"><li class="btn btn-primary"><i class="icon-search"></i> Code Diff</li></a>
+<a href="http://docs.angularjs.org/tutorial/step_06"><li class="btn btn-primary">Next <i class="icon-step-forward"></i></li></a></ul>
+
+
+<p>Enough of building an app with three phones in a hard-coded dataset! Let's fetch a larger dataset
+from our server using one of Angular's built-in <a href="http://docs.angularjs.org/guide/dev_guide.services">services</a> called <a href="http://docs.angularjs.org/api/ng.$http"><code>$http</code></a>. We will use Angular's <a href="http://docs.angularjs.org/guide/di">dependency injection (DI)</a> to provide the service to the <code>PhoneListCtrl</code> controller.</p>
+<div doc-tutorial-reset="5"><div ng-hide="show" class=""><p><a href="" ng-click="show=true;$event.stopPropagation()">Workspace Reset Instructions  ➤</a></p></div>
+<div class="tabbable ng-pristine ng-valid ng-hide" ng-show="show" ng-model="$cookies.platformPreference"><ul class="nav nav-tabs"><li class="active"><a href="">Git on Mac/Linux</a></li><li><a href="">Git on Windows</a></li></ul><div class="tab-content">
+  <div class="tab-pane well active" title="Git on Mac/Linux" value="gitUnix">
+    <ol>
+      <li><p>Reset the workspace to step 5.</p>        <pre>git checkout -f step-5</pre></li>
+      <li><p>Refresh your browser or check the app out on <a href="http://angular.github.com/angular-phonecat/step-5/app">Angular's server</a>.</p></li>
+    </ol>
+  </div>
+  <div class="tab-pane well" title="Git on Windows" value="gitWin">
+    <ol>
+      <li><p>Reset the workspace to step 5.</p>        <pre>git checkout -f step-5</pre></li>
+      <li><p>Refresh your browser or check the app out on <a href="http://angular.github.com/angular-phonecat/step-5/app">Angular's server</a>.</p></li>
+    </ol>
+  </div>
+</div></div>
+</div>
+
+
+<p>You should now see a list of 20 phones.</p>
+<p>The most important changes are listed below. You can see the full diff on <a href="https://github.com/angular/angular-phonecat/compare/step-4...step-5">GitHub</a>:</p>
+<h3 id="data">Data</h3>
+<p>The <code>app/phones/phones.json</code> file in your project is a dataset that contains a larger list of phones
+stored in the JSON format.</p>
+<p>Following is a sample of the file:
+</p><pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pun">[</span></li><li class="L1"><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">  </span><span class="str">"age"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">13</span><span class="pun">,</span></li><li class="L3"><span class="pln">  </span><span class="str">"id"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"motorola-defy-with-motoblur"</span><span class="pun">,</span></li><li class="L4"><span class="pln">  </span><span class="str">"name"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"Motorola DEFY\u2122 with MOTOBLUR\u2122"</span><span class="pun">,</span></li><li class="L5"><span class="pln">  </span><span class="str">"snippet"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"Are you ready for everything life throws your way?"</span></li><li class="L6"><span class="pln">  </span><span class="pun">...</span></li><li class="L7"><span class="pln"> </span><span class="pun">},</span></li><li class="L8"><span class="pun">...</span></li><li class="L9"><span class="pun">]</span></li></ol></pre>
+<h3 id="controller">Controller</h3>
+<p>We'll use Angular's <a href="http://docs.angularjs.org/api/ng.$http"><code>$http</code></a> service in our controller to make an HTTP
+request to your web server to fetch the data in the <code>app/phones/phones.json</code> file. <code>$http</code> is just
+one of several built-in <a href="http://docs.angularjs.org/guide/dev_guide.services">angular services</a> that handle common operations
+in web apps. Angular injects these services for you where you need them.</p>
+<p>Services are managed by Angular's <a href="http://docs.angularjs.org/guide/di">DI subsystem</a>. Dependency injection
+helps to make your web apps both well-structured (e.g., separate components for presentation, data,
+and control) and loosely coupled (dependencies between components are not resolved by the
+components themselves, but by the DI subsystem).</p>
+<p><strong><code>app/js/controllers.js:</code></strong>
+</p><pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="kwd">var</span><span class="pln"> phonecatApp </span><span class="pun">=</span><span class="pln"> angular</span><span class="pun">.</span><span class="kwd">module</span><span class="pun">(</span><span class="str">'phonecatApp'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[]);</span></li><li class="L1"><span class="pln">&nbsp;</span></li><li class="L2"><span class="pln">phonecatApp</span><span class="pun">.</span><span class="pln">controller</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$scope</span><span class="pun">,</span><span class="pln"> $http</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L3"><span class="pln">  $http</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">(</span><span class="str">'phones/phones.json'</span><span class="pun">).</span><span class="pln">success</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(</span><span class="pln">data</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L4"><span class="pln">    $scope</span><span class="pun">.</span><span class="pln">phones </span><span class="pun">=</span><span class="pln"> data</span><span class="pun">;</span></li><li class="L5"><span class="pln">  </span><span class="pun">});</span></li><li class="L6"><span class="pln">&nbsp;</span></li><li class="L7"><span class="pln">  $scope</span><span class="pun">.</span><span class="pln">orderProp </span><span class="pun">=</span><span class="pln"> </span><span class="str">'age'</span><span class="pun">;</span></li><li class="L8"><span class="pun">});</span></li></ol></pre>
+<p><code>$http</code> makes an HTTP GET request to our web server, asking for <code>phone/phones.json</code> (the url is
+relative to our <code>index.html</code> file). The server responds by providing the data in the json file.
+(The response might just as well have been dynamically generated by a backend server. To the
+browser and our app they both look the same. For the sake of simplicity we used a json file in this
+tutorial.)</p>
+<p>The <code>$http</code> service returns a <a href="http://docs.angularjs.org/api/ng.$q"><code>promise object</code></a> with a <code>success</code>
+method. We call this method to handle the asynchronous response and assign the phone data to the
+scope controlled by this controller, as a model called <code>phones</code>. Notice that angular detected the
+json response and parsed it for us!</p>
+<p>To use a service in angular, you simply declare the names of the dependencies you need as arguments
+to the controller's constructor function, as follows:</p>
+<pre><code>phonecatApp.controller('PhoneListCtrl', function ($scope, $http) {...}</code></pre>
+<p>Angular's dependency injector provides services to your controller when the controller is being
+constructed. The dependency injector also takes care of creating any transitive dependencies the
+service may have (services often depend upon other services).</p>
+<p>Note that the names of arguments are significant, because the injector uses these to look up the
+dependencies.</p>
+<p><img class="diagram" src="./AngularJS  5 - XHRs & Dependency Injection_files/xhr_service_final.png"></p>
+<h4 id="controller_-prefix-naming-convention"><code>$</code> Prefix Naming Convention</h4>
+<p>You can create your own services, and in fact we will do exactly that in step 11. As a naming
+convention, angular's built-in services, Scope methods and a few other Angular APIs have a <code>$</code>
+prefix in front of the name.</p>
+<p>The <code>$</code> prefix is there to namespace Angular-provided services.
+To prevent collisions it's best to avoid naming your services and models anything that begins with a <code>$</code>.</p>
+<p>If you inspect a Scope, you may also notice some properties that begin with <code>$$</code>. These
+properties are considered private, and should not be accessed or modified.</p>
+<h4 id="controller_a-note-on-minification">A Note on Minification</h4>
+<p>Since Angular infers the controller's dependencies from the names of arguments to the controller's
+constructor function, if you were to <a href="http://en.wikipedia.org/wiki/Minification_(programming)">minify</a> the JavaScript code for <code>PhoneListCtrl</code> controller, all of its function arguments would be
+minified as well, and the dependency injector would not be able to identify services correctly.</p>
+<p>There are two ways to overcome issues caused by minification:</p>
+<ul>
+<li>You can create a <code>$inject</code> property on the controller function which holds an array of strings.
+Each string in the array is the name of the service to inject for the corresponding parameter.
+In the case of our example we would write:
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="kwd">function</span><span class="pln"> </span><span class="typ">PhoneListCtrl</span><span class="pun">(</span><span class="pln">$scope</span><span class="pun">,</span><span class="pln"> $http</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{...}</span></li><li class="L1"><span class="typ">PhoneListCtrl</span><span class="pun">.</span><span class="pln">$inject </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[</span><span class="str">'$scope'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'$http'</span><span class="pun">];</span></li><li class="L2"><span class="pln">phonecatApp</span><span class="pun">.</span><span class="pln">controller</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="typ">PhoneListCtrl</span><span class="pun">);</span></li></ol></pre></li>
+<li>Use the inline bracket notation which wraps the function to be injected into an array of strings
+(representing the dependency names) followed by the function to be injected:
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="kwd">function</span><span class="pln"> </span><span class="typ">PhoneListCtrl</span><span class="pun">(</span><span class="pln">$scope</span><span class="pun">,</span><span class="pln"> $http</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{...}</span></li><li class="L1"><span class="pln">phonecatApp</span><span class="pun">.</span><span class="pln">controller</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[</span><span class="str">'$scope'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'$http'</span><span class="pun">,</span><span class="pln"> </span><span class="typ">PhoneListCtrl</span><span class="pun">]);</span></li></ol></pre>
+Both of these methods work with any function that can be injected by Angular, so it's up to your
+project's style guide to decide which one you use.</li>
+</ul>
+<p>When using the second method, it is common to provide the constructor function inline as an
+anonymous function when registering the controller:
+</p><pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">phonecatApp</span><span class="pun">.</span><span class="pln">controller</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[</span><span class="str">'$scope'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'$http'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">$scope</span><span class="pun">,</span><span class="pln"> $http</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{...}]);</span></li></ol></pre>
+<p>From this point onward, we're going to use the inline method in the tutorial. With that in mind,
+let's add the annotations to our <code>PhoneListCtrl</code>:</p>
+<p><strong><code>app/js/controllers.js:</code></strong>
+</p><pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="kwd">var</span><span class="pln"> phonecatApp </span><span class="pun">=</span><span class="pln"> angular</span><span class="pun">.</span><span class="kwd">module</span><span class="pun">(</span><span class="str">'phonecatApp'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[]);</span></li><li class="L1"><span class="pln">&nbsp;</span></li><li class="L2"><span class="pln">phonecatApp</span><span class="pun">.</span><span class="pln">controller</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">[</span><span class="str">'$scope'</span><span class="pun">,</span><span class="pln"> </span><span class="str">'$http'</span><span class="pun">,</span></li><li class="L3"><span class="pln">  </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$scope</span><span class="pun">,</span><span class="pln"> $http</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L4"><span class="pln">    $http</span><span class="pun">.</span><span class="kwd">get</span><span class="pun">(</span><span class="str">'phones/phones.json'</span><span class="pun">).</span><span class="pln">success</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(</span><span class="pln">data</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L5"><span class="pln">      $scope</span><span class="pun">.</span><span class="pln">phones </span><span class="pun">=</span><span class="pln"> data</span><span class="pun">;</span></li><li class="L6"><span class="pln">    </span><span class="pun">});</span></li><li class="L7"><span class="pln">&nbsp;</span></li><li class="L8"><span class="pln">    $scope</span><span class="pun">.</span><span class="pln">orderProp </span><span class="pun">=</span><span class="pln"> </span><span class="str">'age'</span><span class="pun">;</span></li><li class="L9"><span class="pln">  </span><span class="pun">}]);</span></li></ol></pre>
+<h3 id="test">Test</h3>
+<p><strong><code>test/unit/controllersSpec.js</code>:</strong></p>
+<p>Because we started using dependency injection and our controller has dependencies, constructing the
+controller in our tests is a bit more complicated. We could use the <code>new</code> operator and provide the
+constructor with some kind of fake <code>$http</code> implementation. However, the recommended (and easier) way
+is to create a controller in the test environment in the same way that angular does it in the
+production code behind the scenes, as follows:</p>
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">describe</span><span class="pun">(</span><span class="str">'PhoneCat controllers'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L1"><span class="pln">&nbsp;</span></li><li class="L2"><span class="pln">  describe</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(){</span></li><li class="L3"><span class="pln">    </span><span class="kwd">var</span><span class="pln"> scope</span><span class="pun">,</span><span class="pln"> ctrl</span><span class="pun">,</span><span class="pln"> $httpBackend</span><span class="pun">;</span></li><li class="L4"><span class="pln">&nbsp;</span></li><li class="L5"><span class="pln">    </span><span class="com">// Load our app module definition before each test.</span></li><li class="L6"><span class="pln">    beforeEach</span><span class="pun">(</span><span class="kwd">module</span><span class="pun">(</span><span class="str">'phonecatApp'</span><span class="pun">));</span></li><li class="L7"><span class="pln">&nbsp;</span></li><li class="L8"><span class="pln">    </span><span class="com">// The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).</span></li><li class="L9"><span class="pln">    </span><span class="com">// This allows us to inject a service but then attach it to a variable</span></li><li class="L0"><span class="pln">    </span><span class="com">// with the same name as the service.</span></li><li class="L1"><span class="pln">    beforeEach</span><span class="pun">(</span><span class="pln">inject</span><span class="pun">(</span><span class="kwd">function</span><span class="pun">(</span><span class="pln">_$httpBackend_</span><span class="pun">,</span><span class="pln"> $rootScope</span><span class="pun">,</span><span class="pln"> $controller</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">      $httpBackend </span><span class="pun">=</span><span class="pln"> _$httpBackend_</span><span class="pun">;</span></li><li class="L3"><span class="pln">      $httpBackend</span><span class="pun">.</span><span class="pln">expectGET</span><span class="pun">(</span><span class="str">'phones/phones.json'</span><span class="pun">).</span></li><li class="L4"><span class="pln">          respond</span><span class="pun">([{</span><span class="pln">name</span><span class="pun">:</span><span class="pln"> </span><span class="str">'Nexus S'</span><span class="pun">},</span><span class="pln"> </span><span class="pun">{</span><span class="pln">name</span><span class="pun">:</span><span class="pln"> </span><span class="str">'Motorola DROID'</span><span class="pun">}]);</span></li><li class="L5"><span class="pln">&nbsp;</span></li><li class="L6"><span class="pln">      scope </span><span class="pun">=</span><span class="pln"> $rootScope</span><span class="pun">.</span><span class="pln">$new</span><span class="pun">();</span></li><li class="L7"><span class="pln">      ctrl </span><span class="pun">=</span><span class="pln"> $controller</span><span class="pun">(</span><span class="str">'PhoneListCtrl'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span class="pln">$scope</span><span class="pun">:</span><span class="pln"> scope</span><span class="pun">});</span></li><li class="L8"><span class="pln">    </span><span class="pun">}));</span></li></ol></pre>
+<p>Note: Because we loaded Jasmine and <code>angular-mocks.js</code> in our test environment, we got two helper
+methods <a href="http://docs.angularjs.org/api/angular.mock.module"><code>module</code></a> and <a href="http://docs.angularjs.org/api/angular.mock.inject"><code>inject</code></a> that we'll
+use to access and configure the injector.</p>
+<p>We created the controller in the test environment, as follows:</p>
+<ul>
+<li><p>We used the <code>inject</code> helper method to inject instances of
+<a href="http://docs.angularjs.org/api/ng.$rootScope"><code>$rootScope</code></a>,
+<a href="http://docs.angularjs.org/api/ng.$controller"><code>$controller</code></a> and
+<a href="http://docs.angularjs.org/api/ng.$httpBackend"><code>$httpBackend</code></a> services into the Jasmine's <code>beforeEach</code>
+function. These instances come from an injector which is recreated from scratch for every single
+test. This guarantees that each test starts from a well known starting point and each test is
+isolated from the work done in other tests.</p>
+</li>
+<li><p>We created a new scope for our controller by calling <code>$rootScope.$new()</code></p>
+</li>
+<li><p>We called the injected <code>$controller</code> function passing the name of the <code>PhoneListCtrl</code> controller
+and the created scope as parameters.</p>
+</li>
+</ul>
+<p>Because our code now uses the <code>$http</code> service to fetch the phone list data in our controller, before
+we create the <code>PhoneListCtrl</code> child scope, we need to tell the testing harness to expect an
+incoming request from the controller. To do this we:</p>
+<ul>
+<li><p>Request <code>$httpBackend</code> service to be injected into our <code>beforeEach</code> function. This is a mock
+version of the service that in a production environment facilitates all XHR and JSONP requests.
+The mock version of this service allows you to write tests without having to deal with
+native APIs and the global state associated with them — both of which make testing a nightmare.</p>
+</li>
+<li><p>Use the <code>$httpBackend.expectGET</code> method to train the <code>$httpBackend</code> service to expect an incoming
+HTTP request and tell it what to respond with. Note that the responses are not returned until we call
+the <code>$httpBackend.flush</code> method.</p>
+</li>
+</ul>
+<p>Now we will make assertions to verify that the <code>phones</code> model doesn't exist on <code>scope</code> before
+the response is received:</p>
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">it</span><span class="pun">(</span><span class="str">'should create "phones" model with 2 phones fetched from xhr'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L1"><span class="pln">  expect</span><span class="pun">(</span><span class="pln">scope</span><span class="pun">.</span><span class="pln">phones</span><span class="pun">).</span><span class="pln">toBeUndefined</span><span class="pun">();</span></li><li class="L2"><span class="pln">  $httpBackend</span><span class="pun">.</span><span class="pln">flush</span><span class="pun">();</span></li><li class="L3"><span class="pln">&nbsp;</span></li><li class="L4"><span class="pln">  expect</span><span class="pun">(</span><span class="pln">scope</span><span class="pun">.</span><span class="pln">phones</span><span class="pun">).</span><span class="pln">toEqual</span><span class="pun">([{</span><span class="pln">name</span><span class="pun">:</span><span class="pln"> </span><span class="str">'Nexus S'</span><span class="pun">},</span></li><li class="L5"><span class="pln">                               </span><span class="pun">{</span><span class="pln">name</span><span class="pun">:</span><span class="pln"> </span><span class="str">'Motorola DROID'</span><span class="pun">}]);</span></li><li class="L6"><span class="pun">});</span></li></ol></pre>
+<ul>
+<li><p>We flush the request queue in the browser by calling <code>$httpBackend.flush()</code>. This causes the
+promise returned by the <code>$http</code> service to be resolved with the trained response.</p>
+</li>
+<li><p>We make the assertions, verifying that the phone model now exists on the scope.</p>
+</li>
+</ul>
+<p>Finally, we verify that the default value of <code>orderProp</code> is set correctly:</p>
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">it</span><span class="pun">(</span><span class="str">'should set the default value of orderProp model'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L1"><span class="pln">  expect</span><span class="pun">(</span><span class="pln">scope</span><span class="pun">.</span><span class="pln">orderProp</span><span class="pun">).</span><span class="pln">toBe</span><span class="pun">(</span><span class="str">'age'</span><span class="pun">);</span></li><li class="L2"><span class="pun">});</span></li></ol></pre>
+<p>You should now see the following output in the Karma tab:</p>
+<pre><code>   Chrome 22.0: Executed 2 of 2 SUCCESS (0.028 secs / 0.007 secs)</code></pre>
+<h2 id="experiments">Experiments</h2>
+<ul>
+<li><p>At the bottom of <code>index.html</code>, add a <code>{{phones | json}}</code> binding to see the list of phones
+displayed in json format.</p>
+</li>
+<li><p>In the <code>PhoneListCtrl</code> controller, pre-process the http response by limiting the number of phones
+to the first 5 in the list. Use the following code in the <code>$http</code> callback:</p>
+<pre><code>   $scope.phones = data.splice(0, 5);</code></pre>
+</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>Now that you have learned how easy it is to use angular services (thanks to Angular's dependency
+injection), go to <a href="http://docs.angularjs.org/tutorial/step_06">step 6</a>, where you will add some
+thumbnail images of phones and some links.</p>
+<ul doc-tutorial-nav="5" class="btn-group tutorial-nav"><a href="http://docs.angularjs.org/tutorial/step_04"><li class="btn btn-primary"><i class="icon-step-backward"></i> Previous</li></a>
+<a href="http://angular.github.com/angular-phonecat/step-5/app"><li class="btn btn-primary"><i class="icon-play"></i> Live Demo</li></a>
+<a href="https://github.com/angular/angular-phonecat/compare/step-4...step-5"><li class="btn btn-primary"><i class="icon-search"></i> Code Diff</li></a>
+<a href="http://docs.angularjs.org/tutorial/step_06"><li class="btn btn-primary">Next <i class="icon-step-forward"></i></li></a></ul></div></div>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="fader" ng-show="subpage" style="display: none" class="ng-hide"></div>
+  <div id="subpage" ng-show="subpage" style="display: none" class="ng-hide">
+    <div>
+      <h2>Would you like full offline support for this AngularJS Docs App?</h2>
+      <a ng-click="subpage=false">✕</a>
+      <p>
+        If you want to be able to access the entire AngularJS documentation offline, click the
+        button below. This will reload the current page and trigger background downloads of all the
+        necessary files (approximately 3.5MB). The next time you load the docs, the browser will
+        use these cached files.
+        <br><br>
+        This feature is supported on all modern browsers, except for IE9 which lacks application
+        cache support.
+      </p>
+      <button id="cacheButton" ng-click="enableOffline()">Let me have them all!</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="pull-right"><a back-to-top="" href="http://docs.angularjs.org/#">Back to top</a></p>
+
+      <p>
+        Super-powered by Google  ©2010-2012
+        ( <a id="version" ng-href="https://github.com/angular/angular.js/blob/master/CHANGELOG.md#1.2.13" ng-bind-template="v1.2.13  romantic-transclusion" class="ng-binding" href="https://github.com/angular/angular.js/blob/master/CHANGELOG.md#1.2.13">v1.2.13  romantic-transclusion</a>
+          <!-- TODO(i): enable
+          <a ng-hide="offlineEnabled" ng-click ="subpage = true">(enable offline support)</a>
+          <span ng-show="offlineEnabled">(offline support enabled)</span>
+          -->
+        )
+      </p>
+      <p>
+        Code licensed under the
+        <a href="https://github.com/angular/angular.js/blob/master/LICENSE" target="_blank">The
+          MIT License</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+      </p>
+    </div>
+  </footer>
+</div>
+
+
+
+</body></html>

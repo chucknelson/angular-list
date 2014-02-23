@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html ng-app="angularListApp">
+  <head>
+    <meta charset="utf-8">
+    <title ng-bind-template="Angular List: {{query}}">Angular List</title>
+    <link rel="stylesheet" href="styles/list.css">
+    <!-- jQuery is used for JavaScript animations (include this before angular.js) -->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="scripts/vendor/angular/angular.js"></script>
+    <script src="scripts/vendor/angular/angular-route.js"></script>
+    <script src="scripts/vendor/angular/angular-resource.js"></script>
+    <script src="scripts/vendor/angular/angular-animate.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
+    <script src="scripts/filters.js"></script>
+    <!-- for angular animations, using either CSS or JS -->
+    <link rel="stylesheet" href="styles/animations.css">
+    <script src="scripts/animations.js"></script>
+
+  </head>
+  <body>
+    <div id="main-container">
+      <h1>Angular List</h1>
+      <div ng-view></div>
+    </div>
+  </body>
+</html>
